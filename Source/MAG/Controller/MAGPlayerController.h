@@ -19,17 +19,22 @@ public:
 
 protected:
 	virtual void BeginPlay();
-	virtual void SetUpInputComponent();
+	virtual void PlayerTick(float DeltaTime) override;
+	virtual void SetupInputComponent() override;
 
 private:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 	void LookUp(float AxisValue);
 	void TurnRight(float AxisValue);
+	void CrouchAction();
+	void Jump();
 
 	void TickCursorTrace();
 
 private:
 	UPROPERTY()
-	APawn* MyPawn;
+	class ACharacter* OwnerCharacter;
+	
+	class IPickableInterface* TargetActor;
 };

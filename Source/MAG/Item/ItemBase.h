@@ -24,7 +24,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-protected: 
+public: 
 	//PickableInterface
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
@@ -33,5 +33,8 @@ protected:
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	bool bHighlighted = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UStaticMeshComponent* Mesh;
 
 };

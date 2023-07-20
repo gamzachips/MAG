@@ -3,12 +3,14 @@
 
 #include "ItemBase.h"
 #include "GameFramework/PlayerController.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
 AItemBase::AItemBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
 }
 
@@ -30,10 +32,13 @@ void AItemBase::Tick(float DeltaTime)
 void AItemBase::HighlightActor()
 {
 	bHighlighted = true;
+	Mesh->SetRenderCustomDepth(true);
 	//¿Ü°û¼± Ã³¸®
 }
 void AItemBase::UnHighlightActor()
 {
 	bHighlighted = false;
+	Mesh->SetRenderCustomDepth(false);
+
 	//¿Ü°û¼± ÇØÁ¦
 }
