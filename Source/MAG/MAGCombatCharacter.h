@@ -14,13 +14,22 @@ class MAG_API AMAGCombatCharacter : public AMAGCharacterBase
 {
 	GENERATED_BODY()
 
+public:
+	// Sets default values for this character's properties
+	AMAGCombatCharacter();
+
 protected:
+	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
+	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Combat)
-	TObjectPtr<USkeletalMeshComponent> Weapon;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* Weapon;
 };

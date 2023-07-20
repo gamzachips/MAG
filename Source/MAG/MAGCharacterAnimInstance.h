@@ -35,7 +35,10 @@ protected:
 		float Angle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-		bool IsInAir;
+		bool bIsInAir;
+	  
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+		bool bIsCrouched;
 
-
+	
 };

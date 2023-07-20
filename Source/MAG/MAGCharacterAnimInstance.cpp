@@ -22,8 +22,7 @@ void UMAGCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (MovementComponent == nullptr) return;
 
 	Speed = Character->GetVelocity().Length();
-	IsInAir = MovementComponent->IsFalling();
+	bIsInAir = MovementComponent->IsFalling();
 	Angle = CalculateDirection(Character->GetVelocity(), Character->GetActorRotation());
-
-
+	bIsCrouched = Character->bIsCrouched;
 }
