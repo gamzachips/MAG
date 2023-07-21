@@ -9,6 +9,9 @@
 /**
  * 
  */
+
+class IPickableInterface;
+
 UCLASS()
 class MAG_API AMAGPlayerController : public APlayerController
 {
@@ -32,9 +35,12 @@ private:
 
 	void TickCursorTrace();
 
+public:
+	IPickableInterface* GetPickableTarget();
+
 private:
 	UPROPERTY()
 	class ACharacter* OwnerCharacter;
 	
-	class IPickableInterface* TargetActor;
+	IPickableInterface* TargetActor;
 };

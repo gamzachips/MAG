@@ -29,6 +29,8 @@ public:
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 
+	FString GetName() {return Name;}
+
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
@@ -36,5 +38,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Widget)
+	class UWidgetComponent* WidgetComponent;
+
 
 };

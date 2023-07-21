@@ -112,3 +112,8 @@ void AMAGPlayerController::TickCursorTrace()
 	}
 	TargetActor = LocalTargetActor;
 }
+
+IPickableInterface* AMAGPlayerController::GetPickableTarget()
+{
+	return TargetActor;
+}
