@@ -41,6 +41,9 @@ public:
 private:
 	UPROPERTY()
 	class ACharacter* OwnerCharacter;
-	
+
 	IPickableInterface* TargetActor;
+	
+	UPROPERTY(EditAnywhere)
+		float ItemPickableDistance = 150;
 };

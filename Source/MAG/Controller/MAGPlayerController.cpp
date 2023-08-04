@@ -86,28 +86,28 @@ void AMAGPlayerController::TickCursorTrace()
 		
 	IPickableInterface* LocalTargetActor = Cast<IPickableInterface>(HitResult.GetActor());
 
-	if(LocalTargetActor == nullptr) //현재 타겟 없으면
+	float ItemDistance = FVector::Distance(OwnerCharacter->GetActorLocation(), HitResult.GetActor()->GetActorLocation());
+
+	if(LocalTargetActor == nullptr) 
 	{
-		//원래 있었는데 없어졌으면 해제
 		if(TargetActor)
 			TargetActor->UnHighlightActor();
-
-		//없었는데 또 없으면 무시
 	}
-	else //현재 타겟 있으면
+	else 
 	{
-		if(TargetActor) //원래도 있었으면
+		if(TargetActor) 
 		{
-			//원래 있던 것과 다르면 교체
 			if(TargetActor!= LocalTargetActor)
 			{
-				LocalTargetActor->HighlightActor();
+				if(ItemDistance < ItemPickableDistance)
+					LocalTargetActor->HighlightActor();
 				TargetActor->UnHighlightActor();
 			}
 		}
-		else //원래 없었는데 생겼으면
+		else 
 		{
-			LocalTargetActor->HighlightActor();
+			if(ItemDistance < ItemPickableDistance)
+				LocalTargetActor->HighlightActor();
 		}
 	}
 	TargetActor = LocalTargetActor;
