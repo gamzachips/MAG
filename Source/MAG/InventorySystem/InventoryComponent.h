@@ -30,9 +30,8 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<class AItemBase> DefaultItemClass;
+	TArray<TSubclassOf<class AItemBase>> DefaultItemClasses;
 
-	class AItemBase* DefaultItem;
 
 	UPROPERTY(EditDefaultsOnly, Category = Inventory)
 	int32 Capacity;

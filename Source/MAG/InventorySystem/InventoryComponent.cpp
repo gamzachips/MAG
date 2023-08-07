@@ -17,11 +17,11 @@ void UInventoryComponent::BeginPlay()
 
 	Items.Empty();
 
-	if (DefaultItemClass == nullptr)
-		return;
-	DefaultItem = NewObject<AItemBase>(this, DefaultItemClass);
-
-	AddItem(DefaultItem);
+	for (auto ItemClass : DefaultItemClasses)
+	{
+		AItemBase* Item  = NewObject<AItemBase>(this, ItemClass);
+		AddItem(Item);
+	}
 }
 
 bool UInventoryComponent::AddItem(AItemBase* Item)
