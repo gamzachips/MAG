@@ -5,6 +5,7 @@
 #include "../Interface/PickableInterface.h"
 #include "GameFramework/Character.h"
 #include "DrawDebugHelpers.h"
+#include "Blueprint/UserWidget.h"
 
 AMAGPlayerController::AMAGPlayerController()
 {
@@ -14,6 +15,10 @@ AMAGPlayerController::AMAGPlayerController()
 void AMAGPlayerController::BeginPlay()
 {
 	OwnerCharacter = GetCharacter();
+
+	//UI
+	InventoryWidget = CreateWidget<UUserWidget>(this, InventoryWidgetClass);
+
 }
 
 void AMAGPlayerController::PlayerTick(float DeltaTime)

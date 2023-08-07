@@ -26,4 +26,33 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public:
+	float GetHealth() { return Health; }
+	void IncreaseHealth(float Value) { Health = FMath::Min(Health + Value, MaxHealth); }
+	void DecreaseHealth(float Value) { Health = FMath::Max(Health - Value, 0); }
+
+	float GetFullness() { return Fullness; }
+	void IncreaseFullness(float Value) { Fullness = FMath::Min(Fullness + Value, MaxFullness); }
+	void DecreaseFullness(float Value) { Fullness = FMath::Max(Fullness - Value, 0); }
+
+
+public:
+	class UInventoryComponent* GetInventory() { return Inventory; }
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Health")
+	float Health;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Health")
+	float MaxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Fullness")
+	float Fullness;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Fullness")
+	float MaxFullness;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
+	class UInventoryComponent* Inventory;
+
+
 };

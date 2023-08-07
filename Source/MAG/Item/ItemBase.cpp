@@ -7,6 +7,7 @@
 #include "../ItemWidget.h"
 #include "Components/WidgetComponent.h"
 
+
 // Sets default values
 AItemBase::AItemBase()
 {
@@ -19,6 +20,8 @@ AItemBase::AItemBase()
 	WidgetComponent->SetupAttachment(Mesh);
 	WidgetComponent->SetRelativeLocationAndRotation(FVector(0,0,40.f), FRotator(0, 90.f, 0));
 	WidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	
+	Weight = 1;
 }
 
 // Called when the game starts or when spawned
@@ -40,7 +43,7 @@ void AItemBase::HighlightActor()
 	Mesh->SetRenderCustomDepth(true);
 	UItemWidget* Widget =  Cast<UItemWidget>(WidgetComponent->GetWidget());
 	if(Widget)
-		Widget->SetItemText(Name);
+		Widget->SetItemText(DisplayName);
 }
 void AItemBase::UnHighlightActor()
 {

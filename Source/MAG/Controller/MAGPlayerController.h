@@ -46,4 +46,11 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 		float ItemPickableDistance = 150;
+
+private:
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UUserWidget> InventoryWidgetClass;
+
+	UPROPERTY()
+		class UUserWidget* InventoryWidget;
 };
