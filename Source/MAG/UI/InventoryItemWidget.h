@@ -17,11 +17,10 @@ class MAG_API UInventoryItemWidget : public UUserWidget
 public:
 	UInventoryItemWidget(const FObjectInitializer& ObjectInitializer);
 
-	virtual void NativeOnInitialized() override;
-	virtual void NativeConstruct() override;
 
-	//void SetItem(class AItemBase* ItemTemp) { Item = ItemTemp; }
 
+	void SetItem(class AItemBase* ItemTemp) { Item = ItemTemp; }
+	void SetInfo();
 public:
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
@@ -30,6 +29,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* Name;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	//class AItemBase* Item;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	class AItemBase* Item;
 };

@@ -3,20 +3,20 @@
 
 #include "InventoryItemWidget.h"
 #include "../Item/ItemBase.h"
-
+#include "Components/TextBlock.h"
+#include "Components/Image.h"
 
 UInventoryItemWidget::UInventoryItemWidget(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
 {
 }
 
-void UInventoryItemWidget::NativeOnInitialized()
-{
-}
 
-void UInventoryItemWidget::NativeConstruct()
+void UInventoryItemWidget::SetInfo()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Set Name and Thumbnail"));
+	if (Item == nullptr) return;
 
+	Name->SetText(FText::FromString(Item->GetDisplayName()));
+	Thumbnail->SetBrushFromTexture(Item->GetThumbnail());
 }
 

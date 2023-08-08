@@ -26,13 +26,18 @@ protected:
 	virtual void SetupInputComponent() override;
 
 private:
+	//BindAxis
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 	void LookUp(float AxisValue);
 	void TurnRight(float AxisValue);
+
+	//BindAction
 	void CrouchAction();
 	void Jump();
+	void ShowOrHideInventory();
 
+	//CursorTrace
 	void TickCursorTrace();
 
 public:
@@ -45,12 +50,14 @@ private:
 	IPickableInterface* TargetActor;
 	
 	UPROPERTY(EditAnywhere)
-		float ItemPickableDistance = 150;
+	float ItemPickableDistance = 150;
 
 private:
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class UUserWidget> InventoryWidgetClass;
+	TSubclassOf<class UUserWidget> InventoryWidgetClass;
 
 	UPROPERTY()
-		class UUserWidget* InventoryWidget;
+	class UUserWidget* InventoryWidget;
+
+	bool bShowingInventory = false;
 };

@@ -13,19 +13,15 @@ class MAG_API AItemBase : public AActor, public IPickableInterface
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AItemBase();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 public: 
-	//PickableInterface
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 
@@ -33,14 +29,11 @@ public:
 	class UTexture2D* GetThumbnail() { return Thumbnail; }
 	void SetOwningInventory(class UInventoryComponent* Inventory) { OwningInventory = Inventory; }
 
-
 protected:
 	virtual void Use(class AMAGCharacterBase* Character) {}
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnUse(class AMAGCharacterBase* Character);
-
-
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
@@ -67,6 +60,5 @@ protected:
 
 	UPROPERTY()
 	class UInventoryComponent* OwningInventory;
-
 
 };

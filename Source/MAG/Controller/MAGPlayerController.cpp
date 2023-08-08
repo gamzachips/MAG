@@ -18,7 +18,6 @@ void AMAGPlayerController::BeginPlay()
 
 	//UI
 	InventoryWidget = CreateWidget<UUserWidget>(this, InventoryWidgetClass);
-
 }
 
 void AMAGPlayerController::PlayerTick(float DeltaTime)
@@ -36,6 +35,7 @@ void AMAGPlayerController::SetupInputComponent()
 	InputComponent->BindAxis(TEXT("TurnRight"), this, &AMAGPlayerController::TurnRight);	
 	InputComponent->BindAction(TEXT("Crouch"),EInputEvent::IE_Pressed, this, &AMAGPlayerController::CrouchAction);
 	InputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AMAGPlayerController::Jump);
+	InputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMAGPlayerController::ShowOrHideInventory);
 }
 
 void AMAGPlayerController::MoveForward(float AxisValue)
@@ -75,6 +75,26 @@ void AMAGPlayerController::Jump()
 {
 	if(OwnerCharacter == nullptr) return;
 	OwnerCharacter->Jump();
+}
+
+void AMAGPlayerController::ShowOrHideInventory()
+{
+	if (InventoryWidget == nullptr) return;
+
+	if (bShowingInventory)
+	{
+		InventoryWidget->RemoveFromViewport();
+		SetInputMode(FInputModeGameOnly());
+		bShowMouseCursor = false;
+		bShowingInventory = false;
+	}
+	else
+	{
+		InventoryWidget->AddToViewport();
+		SetInputMode(FInputModeGameAndUI());
+		bShowMouseCursor = true;
+		bShowingInventory = true;
+	}
 }
 
 void AMAGPlayerController::TickCursorTrace()
