@@ -28,8 +28,9 @@ public:
 	FString GetDisplayName() {return DisplayName;}
 	class UTexture2D* GetThumbnail() { return Thumbnail; }
 	void SetOwningInventory(class UInventoryComponent* Inventory) { OwningInventory = Inventory; }
+	class UInventoryComponent* GetOwningInventory() { return OwningInventory; }
 
-protected:
+public:
 	virtual void Use(class AMAGCharacterBase* Character) {}
 
 	UFUNCTION(BlueprintImplementableEvent)

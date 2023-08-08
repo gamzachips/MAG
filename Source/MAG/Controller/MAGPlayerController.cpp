@@ -6,6 +6,13 @@
 #include "GameFramework/Character.h"
 #include "DrawDebugHelpers.h"
 #include "Blueprint/UserWidget.h"
+#include "../MAGPlayer.h"
+#include "../UI/InventoryWidget.h"
+#include "../UI/InventoryItemWidget.h"
+#include "../Item/ItemBase.h"
+#include "../InventorySystem/InventoryComponent.h"
+#include "../UI/InvenOverlayWidget.h"
+#include "Components/SceneComponent.h"
 
 AMAGPlayerController::AMAGPlayerController()
 {
@@ -33,9 +40,12 @@ void AMAGPlayerController::SetupInputComponent()
 	InputComponent->BindAxis(TEXT("MoveRight"), this, &AMAGPlayerController::MoveRight);
 	InputComponent->BindAxis(TEXT("LookUp"), this, &AMAGPlayerController::LookUp);
 	InputComponent->BindAxis(TEXT("TurnRight"), this, &AMAGPlayerController::TurnRight);	
+
 	InputComponent->BindAction(TEXT("Crouch"),EInputEvent::IE_Pressed, this, &AMAGPlayerController::CrouchAction);
 	InputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AMAGPlayerController::Jump);
 	InputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMAGPlayerController::ShowOrHideInventory);
+	InputComponent->BindAction(TEXT("Interact_Long"), EInputEvent::IE_Pressed, this, &AMAGPlayerController::StartInteract);
+	InputComponent->BindAction(TEXT("Interact_Long"), EInputEvent::IE_Released, this, &AMAGPlayerController::StopInteract);
 }
 
 void AMAGPlayerController::MoveForward(float AxisValue)
@@ -97,6 +107,17 @@ void AMAGPlayerController::ShowOrHideInventory()
 	}
 }
 
+void AMAGPlayerController::StartInteract()
+{
+
+	GetWorldTimerManager().SetTimer(InteractTimerHandle, this, &AMAGPlayerController::HandleInteract, 1.0f, false);
+}
+
+void AMAGPlayerController::StopInteract()
+{
+	GetWorldTimerManager().ClearTimer(InteractTimerHandle);
+}
+
 void AMAGPlayerController::TickCursorTrace()
 {
 	FHitResult CursorHit;
@@ -136,6 +157,38 @@ void AMAGPlayerController::TickCursorTrace()
 		}
 	}
 	TargetActor = LocalTargetActor;
+}
+
+void AMAGPlayerController::HandleInteract()
+{
+
+	if (InventoryWidget == nullptr) return;
+
+	UInvenOverlayWidget* OverlayWidget = Cast<UInvenOverlayWidget>(InventoryWidget);
+	UInventoryItemWidget* ItemWidget = OverlayWidget->GetInventoryWidget()->GetSelectedItemWidget();
+
+	if (ItemWidget == nullptr) return;
+	if (ItemWidget)
+	{
+		AItemBase* Item = ItemWidget->Item;
+		if (Item == nullptr) return;
+		Item->Use(Cast<AMAGCharacterBase>(OwnerCharacter));
+		Item->GetOwningInventory()->RemoveItem(Item);
+		
+		AItemBase* SpawnedItem = GetWorld()->SpawnActor<AItemBase>(
+			Item->GetClass(), 
+			OwnerCharacter->GetActorLocation() + OwnerCharacter->GetActorForwardVector() * 50,
+			FRotator::ZeroRotator);
+
+		if (SpawnedItem)
+		{
+			UStaticMeshComponent* Mesh = SpawnedItem->FindComponentByClass<UStaticMeshComponent>();
+			Mesh->SetSimulatePhysics(true);
+			Mesh->SetEnableGravity(true);
+			Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+			Mesh->SetLinearDamping(0.5);
+		}
+	}
 }
 
 IPickableInterface* AMAGPlayerController::GetPickableTarget()

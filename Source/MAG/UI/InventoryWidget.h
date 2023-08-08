@@ -20,6 +20,7 @@ public:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeConstruct() override;
 
+	UFUNCTION(BlueprintCallable)
 	void RefreshInventory();
 
 	void SetSelecteddItemWidget(class UInventoryItemWidget* ItemWidget) { SelectedItemWidget = ItemWidget; }
@@ -29,7 +30,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UVerticalBox* InventoryList;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	class UInventoryComponent* Inventory;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

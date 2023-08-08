@@ -36,9 +36,14 @@ private:
 	void CrouchAction();
 	void Jump();
 	void ShowOrHideInventory();
+	void StartInteract();
+	void StopInteract();
 
 	//CursorTrace
 	void TickCursorTrace();
+
+	//Interact
+	void HandleInteract();
 
 public:
 	IPickableInterface* GetPickableTarget();
@@ -59,5 +64,8 @@ private:
 	UPROPERTY()
 	class UUserWidget* InventoryWidget;
 
+
+	FTimerHandle InteractTimerHandle;
 	bool bShowingInventory = false;
+	bool bInteractKeyPressed = false;
 };
