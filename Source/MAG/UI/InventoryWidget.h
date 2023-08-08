@@ -22,6 +22,9 @@ public:
 
 	void RefreshInventory();
 
+	void SetSelecteddItemWidget(class UInventoryItemWidget* ItemWidget) { SelectedItemWidget = ItemWidget; }
+	class UInventoryItemWidget* GetSelectedItemWidget() { return SelectedItemWidget; }
+
 protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UVerticalBox* InventoryList;
@@ -31,5 +34,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<class UInventoryItemWidget> InventoryItemWidgetClass;
+
+	UPROPERTY()
+	class UInventoryItemWidget* SelectedItemWidget;
 
 };

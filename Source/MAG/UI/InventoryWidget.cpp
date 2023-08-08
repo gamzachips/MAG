@@ -49,6 +49,8 @@ void UInventoryWidget::RefreshInventory()
 
 			ItemWidget->SetItem(Item);
 			ItemWidget->SetInfo();
+			ItemWidget->SetOwner(this);
 		}
 	}
 }
+
