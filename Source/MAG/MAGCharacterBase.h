@@ -46,10 +46,10 @@ protected:
 	float MaxHealth;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Fullness")
-	float Fullness;
+	float Fullness = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Fullness")
-	float MaxFullness;
+	float MaxFullness = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
 	class UInventoryComponent* Inventory;

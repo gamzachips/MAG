@@ -36,14 +36,21 @@ private:
 	void CrouchAction();
 	void Jump();
 	void ShowOrHideInventory();
-	void StartInteract();
-	void StopInteract();
+	void OnEKeyPressed();
+	void OnEKeyReleased();
+	void OnXKeyPressed();
+	void OnXKeyReleased();
 
 	//CursorTrace
 	void TickCursorTrace();
 
+	void UseItem();
+	void DropItem();
+	void GetItem(class AItemBase* Item);
+
 	//Interact
-	void HandleInteract();
+	void HandleLongXKey();
+
 
 public:
 	IPickableInterface* GetPickableTarget();
@@ -65,7 +72,8 @@ private:
 	class UUserWidget* InventoryWidget;
 
 
-	FTimerHandle InteractTimerHandle;
+	FTimerHandle XKeyTimerHandle;
+	FTimerHandle EKeyTimerHandle;
 	bool bShowingInventory = false;
-	bool bInteractKeyPressed = false;
+	bool bIsLongInteracting = false;
 };

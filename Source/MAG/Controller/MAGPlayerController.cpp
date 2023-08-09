@@ -44,8 +44,10 @@ void AMAGPlayerController::SetupInputComponent()
 	InputComponent->BindAction(TEXT("Crouch"),EInputEvent::IE_Pressed, this, &AMAGPlayerController::CrouchAction);
 	InputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AMAGPlayerController::Jump);
 	InputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &AMAGPlayerController::ShowOrHideInventory);
-	InputComponent->BindAction(TEXT("Interact_Long"), EInputEvent::IE_Pressed, this, &AMAGPlayerController::StartInteract);
-	InputComponent->BindAction(TEXT("Interact_Long"), EInputEvent::IE_Released, this, &AMAGPlayerController::StopInteract);
+	InputComponent->BindAction(TEXT("E"), EInputEvent::IE_Pressed, this, &AMAGPlayerController::OnEKeyPressed);
+	InputComponent->BindAction(TEXT("E"), EInputEvent::IE_Released, this, &AMAGPlayerController::OnEKeyReleased);
+	InputComponent->BindAction(TEXT("X"), EInputEvent::IE_Pressed, this, &AMAGPlayerController::OnXKeyPressed);
+	InputComponent->BindAction(TEXT("X"), EInputEvent::IE_Released, this, &AMAGPlayerController::OnXKeyReleased);
 }
 
 void AMAGPlayerController::MoveForward(float AxisValue)
@@ -107,15 +109,51 @@ void AMAGPlayerController::ShowOrHideInventory()
 	}
 }
 
-void AMAGPlayerController::StartInteract()
+void AMAGPlayerController::OnEKeyPressed()
 {
-
-	GetWorldTimerManager().SetTimer(InteractTimerHandle, this, &AMAGPlayerController::HandleInteract, 1.0f, false);
+	bIsLongInteracting = false;
+	if (bShowingInventory)
+	{
+		GetWorldTimerManager().SetTimer(EKeyTimerHandle, this, &AMAGPlayerController::HandleLongXKey, 1.0f, false);
+	}
 }
 
-void AMAGPlayerController::StopInteract()
+void AMAGPlayerController::OnEKeyReleased()
 {
-	GetWorldTimerManager().ClearTimer(InteractTimerHandle);
+	if (bIsLongInteracting == false)
+	{
+		if (bShowingInventory)
+		{
+			UseItem();
+		}
+		else
+		{
+			AItemBase* TargetItem = Cast<AItemBase>(TargetActor);
+			if (TargetItem)
+			{
+				GetItem(TargetItem);
+			}
+		}
+	}
+
+	GetWorldTimerManager().ClearTimer(EKeyTimerHandle);
+
+}
+
+void AMAGPlayerController::OnXKeyPressed()
+{
+	bIsLongInteracting = false;
+
+	if (bShowingInventory)
+	{
+		GetWorldTimerManager().SetTimer(XKeyTimerHandle, this, &AMAGPlayerController::HandleLongXKey, 1.0f, false);
+	}
+}
+
+void AMAGPlayerController::OnXKeyReleased()
+{
+
+	GetWorldTimerManager().ClearTimer(XKeyTimerHandle);
 }
 
 void AMAGPlayerController::TickCursorTrace()
@@ -145,38 +183,57 @@ void AMAGPlayerController::TickCursorTrace()
 		{
 			if(TargetActor!= LocalTargetActor)
 			{
-				if(ItemDistance < ItemPickableDistance)
+				if (ItemDistance < ItemPickableDistance)
+				{
 					LocalTargetActor->HighlightActor();
+				}
+					
 				TargetActor->UnHighlightActor();
 			}
 		}
 		else 
 		{
-			if(ItemDistance < ItemPickableDistance)
+			if (ItemDistance < ItemPickableDistance)
+			{
 				LocalTargetActor->HighlightActor();
+			}
+				
 		}
 	}
 	TargetActor = LocalTargetActor;
 }
 
-void AMAGPlayerController::HandleInteract()
+void AMAGPlayerController::UseItem()
 {
-
 	if (InventoryWidget == nullptr) return;
 
 	UInvenOverlayWidget* OverlayWidget = Cast<UInvenOverlayWidget>(InventoryWidget);
 	UInventoryItemWidget* ItemWidget = OverlayWidget->GetInventoryWidget()->GetSelectedItemWidget();
 
-	if (ItemWidget == nullptr) return;
 	if (ItemWidget)
 	{
 		AItemBase* Item = ItemWidget->Item;
 		if (Item == nullptr) return;
 		Item->Use(Cast<AMAGCharacterBase>(OwnerCharacter));
 		Item->GetOwningInventory()->RemoveItem(Item);
-		
+	}
+}
+
+void AMAGPlayerController::DropItem()
+{
+	if (InventoryWidget == nullptr) return;
+
+	UInvenOverlayWidget* OverlayWidget = Cast<UInvenOverlayWidget>(InventoryWidget);
+	UInventoryItemWidget* ItemWidget = OverlayWidget->GetInventoryWidget()->GetSelectedItemWidget();
+
+	if (ItemWidget)
+	{
+		AItemBase* Item = ItemWidget->Item;
+		if (Item == nullptr) return;
+		Item->GetOwningInventory()->RemoveItem(Item);
+
 		AItemBase* SpawnedItem = GetWorld()->SpawnActor<AItemBase>(
-			Item->GetClass(), 
+			Item->GetClass(),
 			OwnerCharacter->GetActorLocation() + OwnerCharacter->GetActorForwardVector() * 50,
 			FRotator::ZeroRotator);
 
@@ -189,6 +246,25 @@ void AMAGPlayerController::HandleInteract()
 			Mesh->SetLinearDamping(0.5);
 		}
 	}
+}
+
+void AMAGPlayerController::GetItem(AItemBase* Item)
+{
+	if (Item == nullptr) return;
+
+	AMAGCharacterBase* OwnerPlayer = Cast<AMAGCharacterBase>(OwnerCharacter);
+	if (OwnerPlayer == nullptr) return;
+
+	UE_LOG(LogTemp, Warning, TEXT("Let's Get Item"));
+	OwnerPlayer->GetInventory()->AddItem(Item);
+	Item->Destroy();
+
+}
+
+void AMAGPlayerController::HandleLongXKey()
+{
+	bIsLongInteracting = true;
+	DropItem();
 }
 
 IPickableInterface* AMAGPlayerController::GetPickableTarget()

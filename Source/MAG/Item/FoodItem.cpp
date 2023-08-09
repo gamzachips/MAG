@@ -2,7 +2,7 @@
 
 
 #include "FoodItem.h"
-#include "../MAGCharacterBase.h"
+#include "../MAGPlayer.h"
 
 
 
@@ -19,7 +19,8 @@ void AFoodItem::Use(AMAGCharacterBase* Character)
 {
 	if (Character == nullptr)
 		return;
+	UE_LOG(LogTemp, Warning, TEXT("Fullness = from %f"), Character->GetFullness());
 
 	Character->IncreaseFullness(Fullness);
-
+	UE_LOG(LogTemp, Warning, TEXT("Fullness = %f"), Character->GetFullness());
 }

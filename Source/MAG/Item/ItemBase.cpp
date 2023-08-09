@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "../ItemWidget.h"
 #include "Components/WidgetComponent.h"
+#include "../MAGCharacterBase.h"
 
 
 // Sets default values
@@ -16,6 +17,7 @@ AItemBase::AItemBase()
 	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
+	Mesh->OnComponentBeginOverlap.AddDynamic(this, &AItemBase::OnOverlap);
 
 	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComponent"));
 	WidgetComponent->SetupAttachment(Mesh);
@@ -54,4 +56,10 @@ void AItemBase::UnHighlightActor()
 	if(Widget)
 		Widget->SetItemText("");
 
+}
+
+void AItemBase::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	Mesh->SetSimulatePhysics(false);
+	UE_LOG(LogTemp, Warning, TEXT("collision!"));
 }

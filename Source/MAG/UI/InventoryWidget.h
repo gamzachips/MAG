@@ -19,7 +19,7 @@ public:
 
 	virtual void NativeOnInitialized() override;
 	virtual void NativeConstruct() override;
-
+	
 	UFUNCTION(BlueprintCallable)
 	void RefreshInventory();
 
