@@ -21,7 +21,7 @@ AItemBase::AItemBase()
 
 	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComponent"));
 	WidgetComponent->SetupAttachment(Mesh);
-	WidgetComponent->SetRelativeLocationAndRotation(FVector(0,0,40.f), FRotator(0, 90.f, 0));
+	WidgetComponent->SetRelativeLocationAndRotation(FVector(0,0,20.f), FRotator(0, 90.f, 0));
 	WidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	
 	Weight = 1;

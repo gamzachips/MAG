@@ -29,7 +29,27 @@ bool UInventoryComponent::AddItem(AItemBase* Item)
 		return false;
 
 	Item->SetOwningInventory(this);
-	Items.Add(Item);
+
+	TArray<AItemBase*> ItemArray;
+	Items.GenerateKeyArray(ItemArray);
+
+	bool bFoundItem = false;
+	for (AItemBase* InvenItem : ItemArray)
+	{
+		if (InvenItem->GetDisplayName() == Item->GetDisplayName())
+		{
+			Items[InvenItem] += 1;
+			bFoundItem = true;
+			UE_LOG(LogTemp, Warning, TEXT("found Item"));
+			break;
+		}
+	}
+	if(bFoundItem == false)
+	{
+		Items.Add(Item, 1);
+		UE_LOG(LogTemp, Warning, TEXT("Added Item"));
+
+	}
 
 	OnInventoryUpdated.Broadcast();
 
@@ -42,8 +62,48 @@ bool UInventoryComponent::RemoveItem(AItemBase* Item)
 		return false;
 	
 	Item->SetOwningInventory(nullptr);
-	Items.RemoveSingle(Item);
+
+	TArray<AItemBase*> ItemArray;
+	Items.GenerateKeyArray(ItemArray);
+
+	AItemBase* ItemToRemove = nullptr;
+	for (AItemBase* InvenItem : ItemArray)
+	{
+		if (InvenItem->GetDisplayName() == Item->GetDisplayName())
+		{
+			Items[InvenItem] -= 1;
+			UE_LOG(LogTemp, Warning, TEXT("found Item"));
+
+			if (Items[InvenItem] <= 0)
+				ItemToRemove = InvenItem;
+			break;
+		}
+	}
+
+	if (ItemToRemove)
+	{
+		Items.Remove(ItemToRemove);
+		UE_LOG(LogTemp, Warning, TEXT("Remove Item"));
+	}
+
 	OnInventoryUpdated.Broadcast();
 	return true;
+}
+
+int32 UInventoryComponent::GetItemCount(AItemBase* Item)
+{
+	if (Item == nullptr) return 0;
+
+	TArray<AItemBase*> ItemArray;
+	Items.GenerateKeyArray(ItemArray);
+
+	for (AItemBase* InvenItem : ItemArray)
+	{
+		if (InvenItem->GetDisplayName() == Item->GetDisplayName())
+		{
+			return Items[InvenItem];
+		}
+	}
+	return 0;
 }
 

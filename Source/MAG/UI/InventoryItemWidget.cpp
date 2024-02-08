@@ -7,6 +7,7 @@
 #include "Components/Image.h"
 #include "Components/Button.h"
 #include "InventoryWidget.h"
+#include "../InventorySystem/InventoryComponent.h"
 
 UInventoryItemWidget::UInventoryItemWidget(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)

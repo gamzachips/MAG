@@ -36,9 +36,10 @@ void UInventoryWidget::RefreshInventory()
 	InventoryList->ClearChildren();
 	if (Inventory == nullptr) return;
 
-	TArray<AItemBase*> Items = Inventory->GetItems();
-
-	for (AItemBase* Item : Items)
+	TMap<AItemBase*, int32> Items = Inventory->GetItems();
+	TArray<AItemBase*> ItemArray;
+	Items.GenerateKeyArray(ItemArray);
+	for (AItemBase* Item : ItemArray)
 	{
 		UInventoryItemWidget* ItemWidget = CreateWidget<UInventoryItemWidget>(this, InventoryItemWidgetClass);
 
@@ -50,6 +51,9 @@ void UInventoryWidget::RefreshInventory()
 			ItemWidget->SetItem(Item);
 			ItemWidget->SetInfo();
 			ItemWidget->SetOwner(this);
+
+			//개수 세팅 해야함 
+			//개수 안띄워도 개수 줄일 때 튕김
 		}
 	}
 }

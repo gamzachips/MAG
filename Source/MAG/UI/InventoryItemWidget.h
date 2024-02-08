@@ -39,6 +39,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* Name;
 
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* Count;
+
 	//Item&Inventory
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class AItemBase* Item;
