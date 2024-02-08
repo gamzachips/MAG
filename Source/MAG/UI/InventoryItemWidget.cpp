@@ -7,6 +7,7 @@
 #include "Components/Image.h"
 #include "Components/Button.h"
 #include "InventoryWidget.h"
+#include "../InventorySystem/InventoryComponent.h"
 
 UInventoryItemWidget::UInventoryItemWidget(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
@@ -25,6 +26,13 @@ void UInventoryItemWidget::SetInfo()
 
 	Name->SetText(FText::FromString(Item->GetDisplayName()));
 	Thumbnail->SetBrushFromTexture(Item->GetThumbnail());
+
+}
+
+void UInventoryItemWidget::SetCount(int32 ItemCount)
+{
+	if (Item == nullptr) return;
+	Count->SetText(FText::FromString(FString::FromInt(ItemCount)));
 }
 
 void UInventoryItemWidget::OnButtonPressed()

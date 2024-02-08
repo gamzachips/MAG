@@ -36,9 +36,10 @@ void UInventoryWidget::RefreshInventory()
 	InventoryList->ClearChildren();
 	if (Inventory == nullptr) return;
 
-	TArray<AItemBase*> Items = Inventory->GetItems();
-
-	for (AItemBase* Item : Items)
+	TMap<AItemBase*, int32> Items = Inventory->GetItems();
+	TArray<AItemBase*> ItemArray;
+	Items.GenerateKeyArray(ItemArray);
+	for (AItemBase* Item : ItemArray)
 	{
 		UInventoryItemWidget* ItemWidget = CreateWidget<UInventoryItemWidget>(this, InventoryItemWidgetClass);
 
@@ -50,6 +51,8 @@ void UInventoryWidget::RefreshInventory()
 			ItemWidget->SetItem(Item);
 			ItemWidget->SetInfo();
 			ItemWidget->SetOwner(this);
+
+			ItemWidget->SetCount(Items[Item]);
 		}
 	}
 }

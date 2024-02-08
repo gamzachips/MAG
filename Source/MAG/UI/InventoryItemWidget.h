@@ -23,7 +23,7 @@ public:
 	void SetItem(class AItemBase* ItemTemp) { Item = ItemTemp; }
 	void SetInfo();
 	void SetOwner(class UInventoryWidget* Owner) { OwnerWidget = Owner; }
-
+	void SetCount(int32 ItemCount);
 protected:
 	UFUNCTION()
 	void OnButtonPressed();
@@ -38,6 +38,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* Name;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* Count;
 
 	//Item&Inventory
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

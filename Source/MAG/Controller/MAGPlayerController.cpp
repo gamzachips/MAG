@@ -231,6 +231,7 @@ void AMAGPlayerController::DropItem()
 		AItemBase* Item = ItemWidget->Item;
 		if (Item == nullptr) return;
 		Item->GetOwningInventory()->RemoveItem(Item);
+		OverlayWidget->GetInventoryWidget()->SetSelecteddItemWidget(nullptr);
 
 		AItemBase* SpawnedItem = GetWorld()->SpawnActor<AItemBase>(
 			Item->GetClass(),

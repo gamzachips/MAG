@@ -24,8 +24,9 @@ protected:
 public:
 	bool AddItem(class AItemBase* Item);
 	bool RemoveItem(class AItemBase* Item);
+	int32 GetItemCount(class AItemBase* Item);
 
-	TArray<class AItemBase*>& GetItems() { return Items; }
+	TMap<class AItemBase*, int32>& GetItems() { return Items; }
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -39,5 +40,6 @@ protected:
 	FOnInventoryUpdated OnInventoryUpdated;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
-	TArray<class AItemBase*> Items;
+	TMap<class AItemBase*, int32> Items;
+
 };
